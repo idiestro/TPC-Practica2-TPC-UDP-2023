@@ -5,7 +5,7 @@ import java.net.*;
 import java.util.Properties;
 import Utils.Utils;
 
-public class conexionUDP {
+public class ConexionUDP {
 
     private final Properties prop;
     private final boolean isServer;
@@ -18,13 +18,13 @@ public class conexionUDP {
     /*
     Constructor
      */
-    public conexionUDP(String ifServer) throws Exception {
+    public ConexionUDP(String ifServer) throws Exception {
         prop = Utils.getConfigProperties();
         puertoServidor = Integer.parseInt(prop.getProperty("SERVER_PORT"));
         ipServidor = prop.getProperty("SERVER_PIP");
         isServer = ifServer.equals("Servidor");
-
     }
+
     /*
     Init connection
      */

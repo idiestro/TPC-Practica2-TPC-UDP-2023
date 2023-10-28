@@ -1,21 +1,21 @@
 package Launcher;
 
-import UDP.conexionUDP;
+import UDP.ConexionUDP;
 
 
 public class Main_Server extends Thread{
 
-    private static conexionUDP ConexionUDP;
+    private static ConexionUDP conexionUDP;
 
     public void run(){
         try {
             while (true) {
-                String mensajeRecibido = ConexionUDP.recibirMensajeUDP();
+                String mensajeRecibido = conexionUDP.recibirMensajeUDP();
                 System.out.println(mensajeRecibido);
             }
 
         } catch (Exception e) {
-            ConexionUDP.desconectarUDP();
+            conexionUDP.desconectarUDP();
             throw new RuntimeException(e);
         }
     }
@@ -23,8 +23,8 @@ public class Main_Server extends Thread{
     public static void main(String[] args) {
         try {
             //Launch Server
-            ConexionUDP = new conexionUDP("Servidor");
-            ConexionUDP.iniciarUDP();
+            conexionUDP = new ConexionUDP("Servidor");
+            conexionUDP.iniciarUDP();
             System.out.println("----Servidor Iniciado----");
 
             //Execute multiThreads instructions
