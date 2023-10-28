@@ -16,16 +16,16 @@ public class UserInterface {
         opciones1 = new String[]{"Gryffindor", "Slytherin", "Hufflepuff", "Ravenclaw"};
     }
 
-    public String seleccionarOpcionesUi() throws Exception{
-        int opcionSeleccionada = JOptionPane.showInternalOptionDialog(frame, "Bienvenido a Hogwarts\nselecciona una casa:", "WikiHogwarts", 0, 3, imagenPpal, opciones1, (Object)null);
+    public String seleccionarOpcionesUi(){
+        int opcionSeleccionada = JOptionPane.showInternalOptionDialog( frame, "Bienvenido a Hogwarts\nselecciona una casa:", "WikiHogwarts", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, imagenPpal, opciones1, null);
         return opciones1[opcionSeleccionada];
     }
 
-    public void mostrarMensajeUi(String mensaje) throws Exception{
-        JOptionPane.showMessageDialog(frame, mensaje, "WikiHogwarts", 1, imagenPpal);
+    public void mostrarMensajeUi(String mensaje){
+        JOptionPane.showMessageDialog(frame, mensaje, "WikiHogwarts", JOptionPane.INFORMATION_MESSAGE, imagenPpal);
     }
 
-    public void cerrarUI() throws Exception{
+    public void cerrarUI(){
         JOptionPane.getRootFrame().dispose();
     }
 

@@ -7,7 +7,6 @@ import Utils.Utils;
 
 public class ConexionUDP {
 
-    private final Properties prop;
     private final boolean isServer;
     private final int puertoServidor;
     private final String ipServidor;
@@ -19,7 +18,7 @@ public class ConexionUDP {
     Constructor
      */
     public ConexionUDP(String ifServer) throws Exception {
-        prop = Utils.getConfigProperties();
+        Properties prop = Utils.getConfigProperties();
         puertoServidor = Integer.parseInt(prop.getProperty("SERVER_PORT"));
         ipServidor = prop.getProperty("SERVER_PIP");
         isServer = ifServer.equals("Servidor");

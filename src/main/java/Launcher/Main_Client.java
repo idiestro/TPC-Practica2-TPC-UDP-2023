@@ -19,6 +19,7 @@ public class Main_Client {
 
             conexionUDP.enviarMensajeUDP(opcionElegida);
 
+            userInterface.cerrarUI();
             conexionUDP.desconectarUDP();
             System.out.println("----Cliente Cerrado----");
 
