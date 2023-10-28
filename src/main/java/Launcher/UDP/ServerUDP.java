@@ -3,7 +3,7 @@ package Launcher.UDP;
 import UDP.ConexionUDP;
 
 
-public class Main_Server extends Thread{
+public class ServerUDP extends Thread{
 
     private static ConexionUDP conexionUDP;
 
@@ -28,8 +28,8 @@ public class Main_Server extends Thread{
             System.out.println("----Servidor Iniciado----");
 
             //Execute multiThreads instructions
-            Main_Server main_server = new Main_Server();
-            main_server.start();
+            ServerUDP serverUDP = new ServerUDP();
+            serverUDP.start();
 
         } catch (Exception e) {
             throw new RuntimeException(e);

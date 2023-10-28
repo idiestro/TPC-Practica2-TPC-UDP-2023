@@ -3,7 +3,7 @@ package Launcher.UDP;
 import UDP.ConexionUDP;
 import Utils.UserInterface;
 
-public class Main_Client {
+public class ClientUDP {
 
     public static void main(String[] args) {
 
