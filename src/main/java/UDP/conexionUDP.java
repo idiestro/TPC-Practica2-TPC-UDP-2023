@@ -7,10 +7,10 @@ import Utils.Utils;
 
 public class conexionUDP {
 
-    private Properties prop;
-    private boolean isServer = false;
-    private int puertoServidor;
-    private String ipServidor;
+    private final Properties prop;
+    private final boolean isServer;
+    private final int puertoServidor;
+    private final String ipServidor;
     private InetAddress direccionServidor;
     private DatagramSocket socketUDP;
     private final byte[] buffer_recibido = new byte[2024];
@@ -66,7 +66,7 @@ public class conexionUDP {
     /*
     Close client
      */
-    public void desconectarUDP() throws Exception {
+    public void desconectarUDP(){
         //Close client
         socketUDP.close();
     }

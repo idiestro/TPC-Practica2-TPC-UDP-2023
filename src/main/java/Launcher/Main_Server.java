@@ -2,8 +2,6 @@ package Launcher;
 
 import UDP.conexionUDP;
 
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
 public class Main_Server extends Thread{
 
@@ -11,12 +9,13 @@ public class Main_Server extends Thread{
 
     public void run(){
         try {
-            while(true){
+            while (true) {
                 String mensajeRecibido = ConexionUDP.recibirMensajeUDP();
                 System.out.println(mensajeRecibido);
             }
 
         } catch (Exception e) {
+            ConexionUDP.desconectarUDP();
             throw new RuntimeException(e);
         }
     }
