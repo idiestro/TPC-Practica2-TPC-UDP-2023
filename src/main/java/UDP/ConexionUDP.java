@@ -7,6 +7,7 @@ import Utils.Utils;
 
 public class ConexionUDP {
 
+    //Declare class variables
     private final boolean isServer;
     private final int puertoServidor;
     private final String ipServidor;
