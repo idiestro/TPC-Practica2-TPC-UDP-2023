@@ -1,17 +1,25 @@
 package Launcher;
 
-import UDP.conexionUDP;
+import UDP.ConexionUDP;
+import Utils.UserInterface;
 
 public class Main_Client {
 
     public static void main(String[] args) {
 
         try {
-            conexionUDP ConexionUDP = new conexionUDP("Cliente");
-            ConexionUDP.iniciarUDP();
+            ConexionUDP conexionUDP = new ConexionUDP("Cliente");
+            UserInterface userInterface = new UserInterface();
+
+            conexionUDP.iniciarUDP();
             System.out.println("----Cliente Iniciado----");
-            ConexionUDP.enviarMensajeUDP("Hola desde el cliente");
-            ConexionUDP.desconectarUDP();
+
+            userInterface.iniciarUi();
+            String opcionElegida = userInterface.seleccionarOpcionesUi();
+
+            conexionUDP.enviarMensajeUDP(opcionElegida);
+
+            conexionUDP.desconectarUDP();
             System.out.println("----Cliente Cerrado----");
 
         } catch (Exception e) {
