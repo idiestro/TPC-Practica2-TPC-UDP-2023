@@ -19,9 +19,11 @@ public class ConexionUDP {
     Constructor
      */
     public ConexionUDP(String ifServer) throws Exception {
+        //Get properties from config.properties
         Properties prop = Utils.getConfigProperties();
         puertoServidor = Integer.parseInt(prop.getProperty("SERVER_PORT"));
         ipServidor = prop.getProperty("SERVER_PIP");
+        //Select Server or Client connection
         isServer = ifServer.equals("Servidor");
     }
 
@@ -54,13 +56,13 @@ public class ConexionUDP {
     /*
     Receive message
      */
-    public String recibirMensajeUDP() throws Exception {
+    public DatagramPacket recibirMensajeUDP() throws Exception {
         //Declare datagram for received message
         DatagramPacket mensajeRecibido = new DatagramPacket(buffer_recibido, buffer_recibido.length);
         //Client receive message
         socketUDP.receive(mensajeRecibido);
         //Return received message as string
-        return new String(mensajeRecibido.getData());
+        return mensajeRecibido;
     }
 
     /*
