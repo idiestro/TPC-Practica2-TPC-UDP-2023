@@ -3,25 +3,28 @@ package Launcher.TCP;
 import TCP.*;
 
 import java.net.DatagramPacket;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 
-public class ServerTCP extends Thread{
+public class ServerTCP implements Runnable {
 
     private static ConexionTCP conexionTCP;
+    private Socket socketCliente;
+    private ServerSocket socketServidor;
 
-    public void run(){
-
-        while (true) {
-            try {
+    public void run() {
+        try {
+            while (true) {
+                conexionTCP.aceptarConexionTCP();
                 String mensajeReicbido = conexionTCP.recibirMensajeTCP();
                 System.out.println(mensajeReicbido);
                 conexionTCP.enviarMensajeTCP("Hola cliente");
-
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                throw new RuntimeException(e);
             }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -33,8 +36,9 @@ public class ServerTCP extends Thread{
             conexionTCP.iniciarTCP();
             System.out.println("----Servidor Iniciado----");
 
+
             //Execute multiThreads instructions
-            ServerTCP serverTCP = new ServerTCP();
+            Thread serverTCP = new Thread(new ServerTCP());
             serverTCP.start();
 
         } catch (Exception e) {

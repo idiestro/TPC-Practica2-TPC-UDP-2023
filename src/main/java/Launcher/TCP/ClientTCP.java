@@ -1,26 +1,11 @@
 package Launcher.TCP;
 
-import TCP.ConexionTCP;
+import TCP.*;
 
 
-public class ClientTCP extends Thread{
+public class ClientTCP {
 
     private static ConexionTCP conexionTCP;
-
-    public void run(){
-
-        while (true) {
-            try {
-                conexionTCP.enviarMensajeTCP("Hola servidor");
-                String mensajeRecibido = conexionTCP.recibirMensajeTCP();
-                System.out.println(mensajeRecibido);
-
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                throw new RuntimeException(e);
-            }
-        }
-    }
 
     public static void main(String[] args) {
         try {
@@ -30,9 +15,10 @@ public class ClientTCP extends Thread{
             conexionTCP.iniciarTCP();
             System.out.println("----Cliente Iniciado----");
 
-            //Execute multiThreads instructions
-            ClientTCP serverTCP = new ClientTCP();
-            serverTCP.start();
+            conexionTCP.enviarMensajeTCP("Hola servidor");
+
+            String mensajeRecibido = conexionTCP.recibirMensajeTCP();
+            System.out.println("----Cliente Desconectado----");
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

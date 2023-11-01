@@ -13,7 +13,7 @@ public class ConexionTCP {
     private Socket socketCliente;
     private ServerSocket socketServidor;
     private int puertoCliente, puertoServidor;
-    private String ipCliente, ipServidor;
+    private final String ipCliente, ipServidor;
     private final boolean isServer;
 
 
@@ -38,20 +38,26 @@ public class ConexionTCP {
     public void iniciarTCP() throws IOException {
         //Instance socket and serverSocket
         if(isServer){
-            socketServidor = new ServerSocket(puertoServidor);
+            this.socketServidor = new ServerSocket(puertoServidor);
         } else {
-            socketCliente = new Socket(ipCliente, puertoServidor);
+            this.socketCliente = new Socket(ipServidor, puertoServidor);
         }
     }
 
+    public void aceptarConexionTCP() throws IOException {
+        //Accept connections
+        this.socketCliente = socketServidor.accept();
+    }
+
     /*
-    Send message
-     */
+        Send message
+         */
     public void enviarMensajeTCP(String mensajeEnviado) throws IOException {
         if (isServer) {
-            socketCliente = new Socket(ipCliente, puertoCliente);
+            this.socketCliente = new Socket(ipCliente, puertoCliente);
             DataOutputStream streamOutput = new DataOutputStream(socketCliente.getOutputStream());
             streamOutput.writeUTF(mensajeEnviado);
+            streamOutput.flush();
             streamOutput.close();
         } else {
             ObjectStreamGenerator objectOutput = new ObjectStreamGenerator();
@@ -69,8 +75,6 @@ public class ConexionTCP {
     public String recibirMensajeTCP() throws IOException, ClassNotFoundException {
         String mensajeRecibido = null;
         if(isServer){
-            //Accept connections
-            socketCliente = socketServidor.accept();
             //Instance input stream
             ObjectInputStream streamInput = new ObjectInputStream(socketCliente.getInputStream());
             ObjectStreamGenerator objectInput = (ObjectStreamGenerator) streamInput.readObject();
@@ -78,9 +82,10 @@ public class ConexionTCP {
 
         } else {
             //Create server socket
-            socketServidor = new ServerSocket(puertoCliente);
+            this.socketServidor = new ServerSocket(puertoCliente);
             //Accept connections
-            socketCliente = socketServidor.accept();
+            this.socketCliente = socketServidor.accept();
+
             //Instance input stream
             DataInputStream streamInput = new DataInputStream(socketCliente.getInputStream());
             //Save input message
