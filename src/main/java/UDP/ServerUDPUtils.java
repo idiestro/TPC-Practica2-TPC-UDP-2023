@@ -18,7 +18,7 @@ public class ServerUDPUtils {
     /*
     Constructor
      */
-    private ServerUDPUtils(){
+    public ServerUDPUtils(){
         //Initial arrays
         direccionesClientes = new ArrayList<>();
         puertosClientes = new ArrayList<>();

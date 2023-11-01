@@ -1,22 +1,33 @@
 package Launcher.UDP;
 
-import UDP.ConexionUDP;
+import UDP.*;
+
+import java.net.DatagramPacket;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 
 public class ServerUDP extends Thread{
 
     private static ConexionUDP conexionUDP;
+    private static ServerUDPUtils serverUDPUtils;
 
     public void run(){
-        try {
-            while (true) {
-                String mensajeRecibido = conexionUDP.recibirMensajeUDP();
-                System.out.println(mensajeRecibido);
-            }
 
-        } catch (Exception e) {
-            conexionUDP.desconectarUDP();
-            throw new RuntimeException(e);
+        while (true) {
+            try {
+                DatagramPacket mensajeRecibido = conexionUDP.recibirMensajeUDP();
+
+                serverUDPUtils.getClientInfo(mensajeRecibido);
+                serverUDPUtils.saveClientInfo();
+                serverUDPUtils.logClientInfo();
+
+                System.out.println(new String(mensajeRecibido.getData(), 0, mensajeRecibido.getLength(), StandardCharsets.UTF_8));
+
+            } catch (Exception e) {
+                conexionUDP.desconectarUDP();
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -24,6 +35,8 @@ public class ServerUDP extends Thread{
         try {
             //Launch Server
             conexionUDP = new ConexionUDP("Servidor");
+            serverUDPUtils =  new ServerUDPUtils();
+
             conexionUDP.iniciarUDP();
             System.out.println("----Servidor Iniciado----");
 
