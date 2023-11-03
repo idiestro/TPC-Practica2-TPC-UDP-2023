@@ -3,6 +3,8 @@ package UDP;
 import java.io.IOException;
 import java.net.*;
 import java.util.Properties;
+
+import Launcher.UDP.*;
 import Utils.Utils;
 
 public class ConexionUDP {
@@ -12,7 +14,7 @@ public class ConexionUDP {
     private final int puertoServidor;
     private final String ipServidor;
     private InetAddress direccionServidor;
-    private DatagramSocket socketUDP;
+    private static DatagramSocket socketUDP;
     private final byte[] buffer_recibido = new byte[2024];
 
     /*
@@ -34,7 +36,7 @@ public class ConexionUDP {
         //Set client IP
         direccionServidor = InetAddress.getByName(ipServidor);
         //Create UDP socket
-        if(isServer){
+        if (isServer) {
             socketUDP = new DatagramSocket(puertoServidor);
         } else {
             socketUDP = new DatagramSocket();
@@ -48,9 +50,19 @@ public class ConexionUDP {
     public void enviarMensajeUDP(String mensaje) throws IOException {
         //Declare buffer for sent message
         byte[] buffer_enviado = mensaje.getBytes();
-        //Declare Datagram for sent message
-        DatagramPacket mensajeEnviado = new DatagramPacket(buffer_enviado, buffer_enviado.length, direccionServidor, puertoServidor);
-        socketUDP.send(mensajeEnviado);
+
+        if (isServer) {
+            for (int i = 0; i < ServerUDPUtils.listaClientes.size(); i++) {
+                DatagramPacket respuesta = new DatagramPacket(buffer_enviado, buffer_enviado.length, ServerUDPUtils.direccionesClientes.get(i), ServerUDPUtils.puertosClientes.get(i));
+                socketUDP.send(respuesta);
+            }
+        } else {
+            //Declare Datagram for sent message
+            DatagramPacket mensajeEnviado = new DatagramPacket(buffer_enviado, buffer_enviado.length, direccionServidor, puertoServidor);
+            socketUDP.send(mensajeEnviado);
+        }
+
+
     }
 
     /*
@@ -61,14 +73,14 @@ public class ConexionUDP {
         DatagramPacket mensajeRecibido = new DatagramPacket(buffer_recibido, buffer_recibido.length);
         //Client receive message
         socketUDP.receive(mensajeRecibido);
-        //Return received message as string
+        //Return received message
         return mensajeRecibido;
     }
 
     /*
     Close client
      */
-    public void desconectarUDP(){
+    public void desconectarUDP() {
         //Close client
         socketUDP.close();
     }
