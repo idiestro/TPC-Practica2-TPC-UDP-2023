@@ -5,29 +5,38 @@ import UDP.*;
 import java.net.DatagramPacket;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.HashSet;
 
 
-public class ServerUDP extends Thread{
+public class ServerUDP extends Thread {
 
     private static ConexionUDP conexionUDP;
     private static ServerUDPUtils serverUDPUtils;
 
-    public void run(){
+    public void run() {
+        String mensajeRecibido;
+        String mensajeOut;
+        try {
+            conexionUDP.iniciarUDP();
+            System.out.println("----Servidor Iniciado----");
 
-        while (true) {
-            try {
-                DatagramPacket mensajeRecibido = conexionUDP.recibirMensajeUDP();
-
-                serverUDPUtils.getClientInfo(mensajeRecibido);
+            while (true) {
+                //Receive message from client
+                DatagramPacket datagramIn = conexionUDP.recibirMensajeUDP();
+                //Get, save and show client info: Id
+                serverUDPUtils.getClientInfo(datagramIn);
                 serverUDPUtils.saveClientInfo();
                 serverUDPUtils.logClientInfo();
-
-                System.out.println(new String(mensajeRecibido.getData(), 0, mensajeRecibido.getLength(), StandardCharsets.UTF_8));
-
-            } catch (Exception e) {
-                conexionUDP.desconectarUDP();
-                throw new RuntimeException(e);
+                //Parse datagram input into string
+                mensajeRecibido = (new String(datagramIn.getData(), 0, datagramIn.getLength(), StandardCharsets.UTF_8));
+                //Create a response based on a received message
+                mensajeOut = serverUDPUtils.getMessageAndCreateResponse(mensajeRecibido);
+                //Send message to client
+                conexionUDP.enviarMensajeUDP(mensajeOut);
             }
+        } catch (Exception e) {
+            conexionUDP.desconectarUDP();
+            throw new RuntimeException(e);
         }
     }
 
@@ -35,10 +44,7 @@ public class ServerUDP extends Thread{
         try {
             //Launch Server
             conexionUDP = new ConexionUDP("Servidor");
-            serverUDPUtils =  new ServerUDPUtils();
-
-            conexionUDP.iniciarUDP();
-            System.out.println("----Servidor Iniciado----");
+            serverUDPUtils = new ServerUDPUtils();
 
             //Execute multiThreads instructions
             ServerUDP serverUDP = new ServerUDP();

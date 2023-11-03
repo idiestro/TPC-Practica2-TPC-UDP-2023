@@ -7,9 +7,9 @@ import java.util.HashSet;
 
 public class ServerUDPUtils {
 
-    private static ArrayList <InetAddress> direccionesClientes;
-    private static ArrayList <Integer> puertosClientes;
-    private static HashSet <String> listaClientes;
+    public static ArrayList <InetAddress> direccionesClientes;
+    public static ArrayList <Integer> puertosClientes;
+    public static HashSet <String> listaClientes;
 
     private int puertoCliente;
     private InetAddress direccionCliente;
@@ -54,5 +54,19 @@ public class ServerUDPUtils {
      */
     public void logClientInfo(){
         System.out.println("Cliente conectado: " + Id);
+    }
+
+    /*
+    Get received message and create a response message
+     */
+    public String getMessageAndCreateResponse(String mensajeIn){
+        String mensajeOut = switch (mensajeIn) {
+            case "Ravenclaw" -> "Has elegido la casa Azul";
+            case "Hufflepuff" -> "Has elegido la casa Amarilla";
+            case "Slytherin" -> "Has elegido la casa Verde";
+            case "Gryffindor" -> "Has elegido la casa Roja";
+            default -> "ERROR - El mensaje no ha podido ser analizado";
+        };
+        return mensajeOut;
     }
 }
