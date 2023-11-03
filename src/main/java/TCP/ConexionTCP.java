@@ -1,8 +1,6 @@
 package TCP;
 
 import Utils.*;
-import org.apache.logging.log4j.message.Message;
-
 import java.io.*;
 import java.net.*;
 import java.util.Properties;
@@ -31,22 +29,21 @@ public class ConexionTCP {
 
     }
 
-
     /*
     Init connection
      */
     public void iniciarTCP() throws IOException {
         //Instance socket and serverSocket
         if(isServer){
-            this.socketServidor = new ServerSocket(puertoServidor);
+            socketServidor = new ServerSocket(puertoServidor);
         } else {
-            this.socketCliente = new Socket(ipServidor, puertoServidor);
+            socketCliente = new Socket(ipServidor, puertoServidor);
         }
     }
 
     public void aceptarConexionTCP() throws IOException {
         //Accept connections
-        this.socketCliente = socketServidor.accept();
+        socketCliente = socketServidor.accept();
     }
 
     /*
@@ -54,7 +51,7 @@ public class ConexionTCP {
          */
     public void enviarMensajeTCP(String mensajeEnviado) throws IOException {
         if (isServer) {
-            this.socketCliente = new Socket(ipCliente, puertoCliente);
+            socketCliente = new Socket(ipServidor, puertoServidor);
             DataOutputStream streamOutput = new DataOutputStream(socketCliente.getOutputStream());
             streamOutput.writeUTF(mensajeEnviado);
             streamOutput.flush();
@@ -82,9 +79,9 @@ public class ConexionTCP {
 
         } else {
             //Create server socket
-            this.socketServidor = new ServerSocket(puertoCliente);
+            socketServidor = new ServerSocket(puertoCliente);
             //Accept connections
-            this.socketCliente = socketServidor.accept();
+            socketCliente = socketServidor.accept();
 
             //Instance input stream
             DataInputStream streamInput = new DataInputStream(socketCliente.getInputStream());

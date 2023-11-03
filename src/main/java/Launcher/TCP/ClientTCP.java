@@ -17,7 +17,7 @@ public class ClientTCP {
 
             conexionTCP.enviarMensajeTCP("Hola servidor");
 
-            String mensajeRecibido = conexionTCP.recibirMensajeTCP();
+            conexionTCP.recibirMensajeTCP();
             System.out.println("----Cliente Desconectado----");
 
         } catch (Exception e) {

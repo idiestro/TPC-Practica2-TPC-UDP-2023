@@ -20,7 +20,7 @@ public class ServerTCP implements Runnable {
                 conexionTCP.aceptarConexionTCP();
                 String mensajeReicbido = conexionTCP.recibirMensajeTCP();
                 System.out.println(mensajeReicbido);
-                conexionTCP.enviarMensajeTCP("Hola cliente");
+                conexionTCP.enviarMensajeTCP("Hola servidor");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -32,10 +32,10 @@ public class ServerTCP implements Runnable {
         try {
             //Launch Server
             conexionTCP = new ConexionTCP(true);
-
             conexionTCP.iniciarTCP();
-            System.out.println("----Servidor Iniciado----");
 
+
+            System.out.println("----Servidor Iniciado----");
 
             //Execute multiThreads instructions
             Thread serverTCP = new Thread(new ServerTCP());
