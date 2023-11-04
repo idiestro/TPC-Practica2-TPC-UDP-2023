@@ -2,6 +2,9 @@ package Utils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -33,6 +36,10 @@ public class UserInterface {
      */
     public void mostrarMensajeUi(String mensaje){
         JOptionPane.showMessageDialog(frame, mensaje, "WikiHogwarts", JOptionPane.INFORMATION_MESSAGE, imagenPpal);
+    }
+
+    public String  escribirMensajeUi(){
+        return JOptionPane.showInputDialog(frame);
     }
 
     /*

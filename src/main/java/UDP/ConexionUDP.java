@@ -24,7 +24,7 @@ public class ConexionUDP {
         //Get properties from config.properties
         Properties prop = Utils.getConfigProperties();
         puertoServidor = Integer.parseInt(prop.getProperty("SERVER_PORT"));
-        ipServidor = prop.getProperty("SERVER_PIP");
+        ipServidor = prop.getProperty("SERVER_IP");
         //Select Server or Client connection
         isServer = ifServer.equals("Servidor");
     }
