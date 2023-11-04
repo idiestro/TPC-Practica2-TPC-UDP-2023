@@ -1,10 +1,13 @@
 package TCP;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.awt.*;
+import java.io.*;
 import java.net.Socket;
+import java.util.Properties;
+
+import javax.swing.*;
+import Utils.*;
+
 
 public class Client implements Runnable {
 
@@ -12,48 +15,77 @@ public class Client implements Runnable {
     private BufferedReader in;
     private PrintWriter out;
     private boolean done;
+    private String ipServidor;
+    private int puertoServidor;
+
+
+    public Client() {
+        try {
+            //Get properties from config.properties
+            Properties prop = Utils.getConfigProperties();
+            puertoServidor = Integer.parseInt(prop.getProperty("SERVER_PORT"));
+            ipServidor = prop.getProperty("SERVER_IP");
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+    }
 
     @Override
     public void run() {
+
         try {
-            Socket client = new Socket("127.0.0.1", 9999);
+            //Init client socket
+            client = new Socket(ipServidor, puertoServidor);
+            //Init user interface (UI)
+            new TextIO4GUI("WikiHogwarts");
+            //Init output message
             out = new PrintWriter(client.getOutputStream(), true);
+            //Init buffered reader and input menssage
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
+            //Init input Handler multithreads
             InputHandler inHandler = new InputHandler();
-            Thread t = new Thread(inHandler);
-            t.start();
+            Thread thread = new Thread(inHandler);
+            thread.start();
 
-            String inMessage;
-            while((inMessage = in.readLine()) != null){
-                System.out.println(inMessage);
+            //If input message !null, show it
+            String messageIn;
+            while ((messageIn = in.readLine()) != null) {
+                System.out.println(messageIn);
+                TextIO4GUI.putln(messageIn);
             }
 
         } catch (IOException e) {
             shutdown();
+            System.out.println(e.getMessage());
         }
     }
 
-    public void shutdown(){
+    public void shutdown() {
         done = true;
-        try{
+        try {
             in.close();
             out.close();
-            if(!client.isClosed()){
+
+            if (!client.isClosed()) {
                 client.close();
             }
-        }catch (IOException e){
-
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
+
 
     class InputHandler implements Runnable {
 
         @Override
         public void run() {
             try {
-                BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
                 while (!done) {
+                    BufferedReader inReader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream((TextIO4GUI.getlnString().getBytes()))));
                     String message = inReader.readLine();
                     if (message.equals("/quit")) {
                         inReader.close();
@@ -63,8 +95,9 @@ public class Client implements Runnable {
                     }
                 }
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 shutdown();
+                System.out.println(e.getMessage());
             }
         }
     }
