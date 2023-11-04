@@ -1,7 +1,6 @@
-package TCP;
+package Launcher.TCP;
 
 import Utils.Utils;
-import jdk.jshell.execution.Util;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -115,6 +114,9 @@ public class Server implements Runnable {
                 out = new PrintWriter(client.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
+                //Send presentation message
+                out.println("¡Bienvenido al chat de WikiHogwarts!"
+                + "\n" + "No olvides que tenemos también el programa de consultas ;)" + "\n");
                 //Ask for a nickname for user
                 out.println("Inserta un nombre de usuario");
                 //Save nickname

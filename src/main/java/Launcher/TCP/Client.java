@@ -1,11 +1,9 @@
-package TCP;
+package Launcher.TCP;
 
-import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.Properties;
 
-import javax.swing.*;
 import Utils.*;
 
 
