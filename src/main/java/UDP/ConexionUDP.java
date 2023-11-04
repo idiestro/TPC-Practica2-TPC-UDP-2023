@@ -53,6 +53,7 @@ public class ConexionUDP {
 
         if (isServer) {
             for (int i = 0; i < ServerUDPUtils.listaClientes.size(); i++) {
+                //Create and send response
                 DatagramPacket respuesta = new DatagramPacket(buffer_enviado, buffer_enviado.length, ServerUDPUtils.direccionesClientes.get(i), ServerUDPUtils.puertosClientes.get(i));
                 socketUDP.send(respuesta);
             }

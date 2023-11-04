@@ -47,9 +47,10 @@ public class Client implements Runnable {
             //Init input Handler multithreads
             InputHandler inHandler = new InputHandler();
             Thread thread = new Thread(inHandler);
+            //Run multithreads
             thread.start();
 
-            //If input message !null, show it
+            //If input message !null, show it in UI
             String messageIn;
             while ((messageIn = in.readLine()) != null) {
                 System.out.println(messageIn);
@@ -61,6 +62,9 @@ public class Client implements Runnable {
             System.out.println(e.getMessage());
         }
     }
+    /*
+    Close connection and execution method
+     */
 
     public void shutdown() {
         done = true;
@@ -83,8 +87,10 @@ public class Client implements Runnable {
         public void run() {
             try {
                 while (!done) {
+                    //Insert text from user interface
                     BufferedReader inReader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream((TextIO4GUI.getlnString().getBytes()))));
                     String message = inReader.readLine();
+                    //Analyze if message is 'quit'
                     if (message.equals("/quit")) {
                         inReader.close();
                         shutdown();
