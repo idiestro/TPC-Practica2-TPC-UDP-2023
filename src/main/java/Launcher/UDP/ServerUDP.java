@@ -1,6 +1,7 @@
 package Launcher.UDP;
 
 import UDP.*;
+import Utils.Utils;
 
 import java.net.DatagramPacket;
 import java.nio.charset.StandardCharsets;
@@ -12,6 +13,7 @@ public class ServerUDP extends Thread {
 
     private static ConexionUDP conexionUDP;
     private static ServerUDPUtils serverUDPUtils;
+    private static Utils utils;
 
     public void run() {
         String mensajeRecibido;
@@ -30,7 +32,7 @@ public class ServerUDP extends Thread {
                 //Parse datagram input into string
                 mensajeRecibido = (new String(datagramIn.getData(), 0, datagramIn.getLength(), StandardCharsets.UTF_8));
                 //Create a response based on a received message
-                mensajeOut = serverUDPUtils.getMessageAndCreateResponse(mensajeRecibido);
+                mensajeOut = utils.getMessageAndCreateResponse(mensajeRecibido);
                 //Send message to client
                 conexionUDP.enviarMensajeUDP(mensajeOut);
             }
@@ -45,6 +47,7 @@ public class ServerUDP extends Thread {
             //Launch Server
             conexionUDP = new ConexionUDP("Servidor");
             serverUDPUtils = new ServerUDPUtils();
+            utils = new Utils();
 
             //Execute multiThreads instructions
             ServerUDP serverUDP = new ServerUDP();

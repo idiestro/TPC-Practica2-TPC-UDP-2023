@@ -1,6 +1,7 @@
 package TCP;
 
 import Utils.Utils;
+import jdk.jshell.execution.Util;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -121,27 +122,24 @@ public class Server implements Runnable {
                 System.out.println(nickname + " Conectado");
                 //broadcast message to client with nickname and connections successfully
                 broadcast(nickname + " disponible en la Wiki!");
-                broadcast("Si insertas /casas-help te mostrartemos la información de las casa de Hogwarts");
 
                 String message;
 
-                //Change nick functions
+                //Message options
                 while ((message = in.readLine()) != null) {
+                    //Change Nick options
                     if (message.startsWith("/nick")) {
                         String[] messageSplit = message.split(" ", 2);
                         if (messageSplit.length == 2) {
                             broadcast(nickname + " se renombra como " + messageSplit[1]);
-                            System.out.println(nickname + " rse renombra como " + messageSplit[1]);
+                            System.out.println(nickname + " se renombra como " + messageSplit[1]);
                             nickname = messageSplit[1];
                             out.println("Nick cambiado satisfactoriamente a " + nickname);
                         } else {
                             out.println("Nick no insertado");
                         }
                         //Close connection function
-                    } else if (message.startsWith("/casas-help")){
-                        //TODO: add houses selector and response
-
-                    } else if (message.startsWith("/quit")) {
+                    }else if (message.startsWith("/quit")) {
                         broadcast(nickname + " left the chat");
                         shutdown();
                     //Broadcast function

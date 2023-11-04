@@ -20,4 +20,17 @@ public class Utils {
 
         }
     }
+    /*
+    Get received message and create a response message
+     */
+    public String getMessageAndCreateResponse(String mensajeIn){
+        String mensajeOut = switch (mensajeIn) {
+            case "Ravenclaw" -> "Has elegido la casa Azul";
+            case "Hufflepuff" -> "Has elegido la casa Amarilla";
+            case "Slytherin" -> "Has elegido la casa Verde";
+            case "Gryffindor" -> "Has elegido la casa Roja";
+            default -> "ERROR - El mensaje no ha podido ser analizado";
+        };
+        return mensajeOut;
+    }
 }
